@@ -31,8 +31,17 @@ export class UnitsFragmentComponent {
     }
 
     deleteItinerary(itinerary: Itinerary) {
-        this.rest.deleteItinerary(itinerary)
-            .subscribe(() => this.unit.itineraries = this.unit.itineraries.filter(i => i.id !== itinerary.id));
+        this.dialogService.openConfirm({
+            message: 'Estás seguro de que deseas eliminar ' + itinerary.title,
+            title: 'Eliminar ' + itinerary.title,
+            cancelButton: 'Cancelar',
+            acceptButton: 'Confirmar'
+        }).afterClosed().subscribe((accept: boolean) => {
+            if (accept) {
+                this.rest.deleteItinerary(itinerary)
+                    .subscribe(() => this.unit.itineraries = this.unit.itineraries.filter(i => i.id !== itinerary.id));
+            }
+        });
     }
 
     addItinerary(): void {

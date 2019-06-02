@@ -47,7 +47,16 @@ export class UnitsComponent implements OnInit {
     }
 
     deleteUnit(unit: Unit) {
-        this.rest.deleteUnit(unit).subscribe(() => this.units = this.units.filter(e => e.id !== unit.id));
+        this.dialogService.openConfirm({
+            message: 'Estás seguro de que deseas eliminar ' + unit.title,
+            title: 'Eliminar ' + unit.title,
+            cancelButton: 'Cancelar',
+            acceptButton: 'Confirmar'
+        }).afterClosed().subscribe((accept: boolean) => {
+            if (accept) {
+                this.rest.deleteUnit(unit).subscribe(() => this.units = this.units.filter(e => e.id !== unit.id));
+            }
+        });
     }
 
     get isAdmin() {
