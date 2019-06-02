@@ -28,7 +28,7 @@ services:
       - "443:8443"
     restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:3306/daw
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/daw
     networks:
       - app
 networks:
