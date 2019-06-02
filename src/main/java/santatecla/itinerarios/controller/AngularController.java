@@ -5,6 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AngularController {
+    @GetMapping("/")
+    public String forwardSPAFromRoot() {
+        return "forward:/app";
+    }
+
     @GetMapping("/app/{path:[^\\.]+}/**")
     public String forwardSPA() {
         return "forward:/app/index.html";
