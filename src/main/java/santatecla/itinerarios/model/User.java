@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "users")
 @Data
 @NoArgsConstructor
 public class User {
