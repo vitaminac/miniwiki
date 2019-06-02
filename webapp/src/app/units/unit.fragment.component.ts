@@ -10,7 +10,7 @@ import { ItineraryService } from '../service/itinerary.service';
     templateUrl: './unit.fragment.component.html',
     styleUrls: ['./unit.fragment.component.scss']
 })
-export class UnitsFragmentComponent implements OnInit {
+export class UnitsFragmentComponent {
     @Input()
     unit: Unit;
     itineraries: Itinerary[];
@@ -26,18 +26,13 @@ export class UnitsFragmentComponent implements OnInit {
         this.delete = new EventEmitter();
     }
 
-    ngOnInit(): void {
-        this.rest.fetchItinerariesByUnit(this.unit).subscribe(data => {
-            this.itineraries = data._embedded.itineraries;
-        });
-    }
-
     deleteThis() {
         this.delete.emit();
     }
 
     deleteItinerary(itinerary: Itinerary) {
-        this.rest.deleteItinerary(itinerary).subscribe(() => this.itineraries = this.itineraries.filter(i => i.id !== itinerary.id));
+        this.rest.deleteItinerary(itinerary)
+            .subscribe(() => this.unit.itineraries = this.unit.itineraries.filter(i => i.id !== itinerary.id));
     }
 
     addItinerary(): void {
@@ -49,7 +44,7 @@ export class UnitsFragmentComponent implements OnInit {
         }).afterClosed().subscribe((title: string) => {
             if (title) {
                 this.rest.saveItinerary({ title, unit: this.unit }).subscribe(itinerary => {
-                    this.itineraries.push(itinerary);
+                    this.unit.itineraries.push(itinerary);
                 });
             }
         });

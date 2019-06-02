@@ -66,4 +66,12 @@ export class UnitsComponent implements OnInit {
             }
         }
     }
+
+    loadItineraries(unit: Unit) {
+        if (!unit.itineraries) {
+            this.rest.fetchItinerariesByUnit(unit).subscribe(data => {
+                unit.itineraries = data._embedded.itineraries;
+            });
+        }
+    }
 }

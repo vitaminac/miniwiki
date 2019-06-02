@@ -6,7 +6,7 @@
   <mat-icon>add</mat-icon>
 </button>
 <div class="will-load" infiniteScroll [scrollWindow]="false" [immediateCheck]="true" (scrolled)="loadMore()">
-  <td-expansion-panel *ngFor="let unit of units" label="{{unit.title}}">
+  <td-expansion-panel *ngFor="let unit of units" label="{{unit.title}}" (expanded)="loadItineraries(unit)">
     <app-unit-fragment [unit]="unit" (delete)="deleteUnit(unit)"></app-unit-fragment>
   </td-expansion-panel>
 

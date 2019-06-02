@@ -1,7 +1,7 @@
  <div class="md-padding">
    <mat-nav-list>
-     <ng-template tdLoading [tdLoadingUntil]="itineraries">
-       <mat-list-item *ngFor="let itinerary of itineraries">{{itinerary.title}}
+     <ng-template tdLoading [tdLoadingUntil]="unit.itineraries">
+       <mat-list-item *ngFor="let itinerary of unit.itineraries">{{itinerary.title}}
          <span>
            <button mat-icon-button [mat-menu-trigger-for]="menu">
              <mat-icon>more_vert</mat-icon>
