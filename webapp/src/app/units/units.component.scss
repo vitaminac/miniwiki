@@ -1,3 +1,12 @@
 button.mat-fab-bottom-right {
   bottom: 50px
 }
+
+.will-load {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+:host {
+  overflow-y: hidden;
+}

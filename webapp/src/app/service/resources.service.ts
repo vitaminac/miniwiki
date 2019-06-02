@@ -8,6 +8,7 @@ import { API_UNITS } from '../config';
 import { Itinerary } from '../model/itinerary';
 import { File } from '../model/file';
 import { View } from '../model/view';
+import { Resources } from '../model/resources';
 
 @Injectable({
     providedIn: 'root'
@@ -107,11 +108,6 @@ export class ResourcesService {
     saveView(view: View): Observable<View> {
         return this.http.post<File>('/api/views', this.clone(view))
             .pipe(mergeMap(view => this.fetchResource('/api/views/' + view.id, View)));
-    }
-
-    saveUnit(unit: Unit): Observable<Unit> {
-        return this.http.post<File>('/api/units', this.clone(unit))
-            .pipe(mergeMap(unit => this.fetchResource('/api/units/' + unit.id, Unit)));
     }
 
     saveItinerary(itinerary): Observable<Itinerary> {

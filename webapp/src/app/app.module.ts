@@ -83,6 +83,7 @@ import { CovalentTooltipEchartsModule } from '@covalent/echarts/tooltip';
 import { CovalentToolboxEchartsModule } from '@covalent/echarts/toolbox';
 
 import { ClipboardModule } from 'ngx-clipboard';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 @NgModule({
     declarations: [
         AppComponent,
@@ -169,7 +170,8 @@ import { ClipboardModule } from 'ngx-clipboard';
         CovalentTooltipEchartsModule,
         CovalentToolboxEchartsModule,
 
-        ClipboardModule
+        ClipboardModule,
+        InfiniteScrollModule
     ],
     providers: [{
         provide: HTTP_INTERCEPTORS,

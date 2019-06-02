@@ -4,12 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import santatecla.itinerarios.model.Form;
-import santatecla.itinerarios.model.Itinerary;
-import santatecla.itinerarios.model.Unit;
 import santatecla.itinerarios.model.User;
-import santatecla.itinerarios.model.View;
-import santatecla.itinerarios.repo.UnitRepository;
 import santatecla.itinerarios.repo.UserRepository;
 
 @SpringBootApplication
@@ -20,7 +15,7 @@ public class WebApplication {
     }
 
     @Bean
-    public CommandLineRunner addTestData(UnitRepository unitRepository, UserRepository userRepository) {
+    public CommandLineRunner addTestData(UserRepository userRepository) {
         return (args) -> {
             if (userRepository.count() <= 0) {
                 userRepository.deleteAll();
