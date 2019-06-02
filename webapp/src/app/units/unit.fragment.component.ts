@@ -1,9 +1,9 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TdDialogService } from '@covalent/core';
 import { Itinerary } from '../model/itinerary';
 import { Unit } from '../model/unit';
-import { ResourcesService } from '../service/resources.service';
 import { AuthenticationService } from '../service/authentication.service';
+import { ItineraryService } from '../service/itinerary.service';
 
 @Component({
     selector: 'app-unit-fragment',
@@ -19,7 +19,7 @@ export class UnitsFragmentComponent implements OnInit {
     delete: EventEmitter<any>;
 
     constructor(
-        private rest: ResourcesService,
+        private rest: ItineraryService,
         private dialogService: TdDialogService,
         private auth: AuthenticationService
     ) {
@@ -27,7 +27,9 @@ export class UnitsFragmentComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.unit.itineraries.subscribe(itineraries => this.itineraries = itineraries);
+        this.rest.fetchItinerariesByUnit(this.unit).subscribe(data => {
+            this.itineraries = data._embedded.itineraries;
+        });
     }
 
     deleteThis() {
@@ -35,7 +37,7 @@ export class UnitsFragmentComponent implements OnInit {
     }
 
     deleteItinerary(itinerary: Itinerary) {
-        this.rest.deleteResource(itinerary).subscribe(() => this.itineraries = this.itineraries.filter(i => i.id !== itinerary.id));
+        this.rest.deleteItinerary(itinerary).subscribe(() => this.itineraries = this.itineraries.filter(i => i.id !== itinerary.id));
     }
 
     addItinerary(): void {
@@ -46,7 +48,7 @@ export class UnitsFragmentComponent implements OnInit {
             acceptButton: 'Crear'
         }).afterClosed().subscribe((title: string) => {
             if (title) {
-                this.rest.saveItinerary({ title, unit: this.unit.self }).subscribe(itinerary => {
+                this.rest.saveItinerary({ title, unit: this.unit }).subscribe(itinerary => {
                     this.itineraries.push(itinerary);
                 });
             }

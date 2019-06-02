@@ -1,20 +1,22 @@
  <div class="md-padding">
    <mat-nav-list>
-     <mat-list-item *ngFor="let itinerary of itineraries">{{itinerary.title}}
-       <span>
-         <button mat-icon-button [mat-menu-trigger-for]="menu">
-           <mat-icon>more_vert</mat-icon>
-         </button>
-         <mat-menu x-position="before" #menu="matMenu">
-           <a mat-menu-item [routerLink]="'/units/' + unit.id + '/itineraries/' + itinerary.id">
-             <mat-icon>send</mat-icon>Acceder
-           </a>
-           <button mat-menu-item (click)="deleteItinerary(itinerary)">
-             <mat-icon>delete</mat-icon>Eliminar
+     <ng-template tdLoading [tdLoadingUntil]="itineraries">
+       <mat-list-item *ngFor="let itinerary of itineraries">{{itinerary.title}}
+         <span>
+           <button mat-icon-button [mat-menu-trigger-for]="menu">
+             <mat-icon>more_vert</mat-icon>
            </button>
-         </mat-menu>
-       </span>
-     </mat-list-item>
+           <mat-menu x-position="before" #menu="matMenu">
+             <a mat-menu-item [routerLink]="'/units/' + unit.id + '/itineraries/' + itinerary.id">
+               <mat-icon>send</mat-icon>Acceder
+             </a>
+             <button mat-menu-item (click)="deleteItinerary(itinerary)">
+               <mat-icon>delete</mat-icon>Eliminar
+             </button>
+           </mat-menu>
+         </span>
+       </mat-list-item>
+     </ng-template>
      <mat-list-item *ngIf="isAdmin">
        <button mat-button (click)="deleteThis()">
          <mat-icon>delete</mat-icon>Eliminar la unidad
