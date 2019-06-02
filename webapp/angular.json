@@ -63,6 +63,7 @@
                     "options": {
                         "proxyConfig": "proxy.conf.js",
                         "browserTarget": "daw:build",
+                        "ssl": true
                     },
                     "configurations": {
                         "production": {
