@@ -4,12 +4,7 @@ import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import santatecla.itinerarios.model.User;
 import santatecla.itinerarios.repo.UserRepository;
 import santatecla.itinerarios.service.UserService;
@@ -29,18 +24,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/signUp")
-    public String signUp(@Valid @NotNull @ModelAttribute("user") User user) {
-        if (this.repo.existsByUsername(user.getUsername())) {
-            return "redirect:/signUp";
-        } else {
-            this.repo.save(user);
-            return "redirect:/login";
-        }
-    }
-
     @PostMapping
-    public ResponseEntity<User> signUpUser(@Valid @NotNull @RequestBody User user) {
+    public ResponseEntity<User> signUp(@Valid @NotNull @RequestBody User user) {
         if (this.repo.existsByUsername(user.getUsername())) {
             return ResponseEntity.badRequest().body(user);
         } else {

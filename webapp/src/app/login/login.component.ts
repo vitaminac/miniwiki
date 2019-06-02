@@ -10,7 +10,7 @@ import { AuthenticationService } from '../service/authentication.service';
     styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-    credential: CredentialDTO = { username: '', password: '' };
+    credential: CredentialDTO = {username: '', password: '', roles: ['user']};
     loginMode: boolean;
 
     constructor(

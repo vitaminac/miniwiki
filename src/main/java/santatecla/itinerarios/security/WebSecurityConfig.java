@@ -33,15 +33,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/units", true).failureUrl("/login_error").and().logout().logoutUrl("/logout")
                 .logoutSuccessUrl("/units").permitAll();
 
-        http.httpBasic().and().authorizeRequests().antMatchers("/api", "/api/units", "/api/units/{\\d+}/itineraries")
-                .permitAll().antMatchers(HttpMethod.POST, "/api/users").permitAll()
+        http.httpBasic().and().authorizeRequests()
+                .antMatchers("/api", "/api/units", "/api/units/{\\d+}/itineraries").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/**").hasRole("admin").antMatchers(HttpMethod.DELETE, "/api/**")
                 .hasRole("admin").antMatchers(HttpMethod.PUT, "/api/**").hasRole("admin")
                 .antMatchers(HttpMethod.PATCH, "/api/**").hasRole("admin").antMatchers("/api/**")
                 .hasAnyRole("user", "admin").anyRequest().authenticated();
         // TODO:
         // .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+        http.requiresChannel().anyRequest().requiresSecure();
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     }
 
