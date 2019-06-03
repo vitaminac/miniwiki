@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Itinerary } from '../model/itinerary';
 import { Unit } from '../model/unit';
 import { UnitService } from '../service/unit.service';
 
@@ -11,7 +10,6 @@ import { UnitService } from '../service/unit.service';
 })
 export class UnitComponent implements OnInit {
     unit: Unit;
-    itineraries: Itinerary[];
 
     constructor(
         private route: ActivatedRoute,
