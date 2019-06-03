@@ -16,7 +16,11 @@ export class CredentialService {
     }
 
     update(credential: CredentialDTO) {
-        this._credential = credential;
+        if (this._credential == null) {
+            this._credential = credential;
+        } else {
+            this._credential = Object.assign(this._credential, credential);
+        }
     }
 
     invalidate() {
