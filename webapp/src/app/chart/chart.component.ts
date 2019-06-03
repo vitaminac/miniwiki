@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ResourcesService } from '../service/resources.service';
+import { Itinerary } from '../model/itinerary';
 
 @Component({
     selector: 'app-chart',
@@ -93,7 +94,8 @@ export class ChartComponent implements OnInit {
                 this.config = Object.assign({}, this.config);
             });
             forkJoin(units.map(unit => {
-                return unit.itineraries.pipe(map(itineraries => itineraries.length));
+                let todo = 'itineraries'; // TODO
+                return unit[todo].pipe(map<Itinerary[], any>(itineraries => itineraries.length));
             })).subscribe(data => {
                 this.config.series.push({
                     type: 'bar',

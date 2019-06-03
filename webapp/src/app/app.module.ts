@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { AuthInterceptor } from './interceptor/AuthInterceptor';
+import { AuthInterceptor } from './interceptor/auth-interceptor';
 import { CredentialService } from './service/credential.service';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -83,7 +83,10 @@ import { CovalentTooltipEchartsModule } from '@covalent/echarts/tooltip';
 import { CovalentToolboxEchartsModule } from '@covalent/echarts/toolbox';
 
 import { ClipboardModule } from 'ngx-clipboard';
-import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CachingInterceptor } from './interceptor/caching-interceptor';
+import { RequestCacheWithMap } from './service/request-cache.service';
+import { MessageService } from './service/message.service';
 @NgModule({
     declarations: [
         AppComponent,
@@ -173,12 +176,20 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
         ClipboardModule,
         InfiniteScrollModule
     ],
-    providers: [{
-        provide: HTTP_INTERCEPTORS,
-        useClass: AuthInterceptor,
-        multi: true,
-        deps: [CredentialService]
-    }],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true,
+            deps: [CredentialService]
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: CachingInterceptor,
+            multi: true,
+            deps: [RequestCacheWithMap]
+        }
+    ],
     bootstrap: [AppComponent],
     entryComponents: [AppComponent, FileDialogComponent]
 })

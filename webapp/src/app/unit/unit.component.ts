@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Itinerary } from '../model/itinerary';
-import { ResourcesService } from '../service/resources.service';
 import { Unit } from '../model/unit';
-import { mergeMap, exhaustMap } from 'rxjs/operators';
+import { UnitService } from '../service/unit.service';
 
 @Component({
     selector: 'app-unit',
@@ -16,14 +15,16 @@ export class UnitComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private rest: ResourcesService) {
+        private rest: UnitService) {
     }
 
     ngOnInit() {
         this.route.params.subscribe(params => {
-            this.rest.fetchUnit(Number(params.id)).subscribe(unit => {
+            this.rest.fetchUnit(params.id).subscribe((unit) => {
                 this.unit = unit;
-                unit.itineraries.subscribe(itineraries => this.itineraries = itineraries);
+                this.rest.fetchItinerariesByUnit(unit).subscribe((data) => {
+                    this.unit.itineraries = data._embedded.itineraries;
+                });
             });
         });
     }

@@ -21,6 +21,10 @@ export class UnitService {
         });
     }
 
+    fetchUnit(id: number): Observable<Unit> {
+        return this.http.get<Unit>('/api/units/' + id);
+    }
+
     deleteUnit(unit: Unit) {
         return this.http.delete('/api/units/' + unit.id);
     }

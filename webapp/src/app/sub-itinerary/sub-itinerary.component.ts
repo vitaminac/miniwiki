@@ -50,7 +50,8 @@ export class SubItineraryComponent implements OnInit {
     }
 
     updateItineraries(unit: Unit) {
-        unit.itineraries.subscribe(itineraries => this.itineraries = itineraries);
+        let todo = 'itineraries';
+        unit[todo].subscribe(itineraries => this.itineraries = itineraries);
     }
 
     select(itinerary: Itinerary) {

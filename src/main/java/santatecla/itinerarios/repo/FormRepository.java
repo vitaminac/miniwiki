@@ -20,4 +20,6 @@ public interface FormRepository extends JpaRepository<Form, Long> {
 
     @RestResource(exported = false)
     Set<Basic> findAllByUnit_Id(Long id);
+
+    Long countByUnit_Id(Long id);
 }

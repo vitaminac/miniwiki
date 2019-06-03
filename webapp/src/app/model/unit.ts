@@ -1,5 +1,5 @@
-import { Resource } from './resource';
 import { Itinerary } from './itinerary';
+import { Resource } from './resource';
 
 export class Unit extends Resource {
     id: number;
