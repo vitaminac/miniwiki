@@ -46,12 +46,8 @@ export class FileDialogComponent {
         });
     }
 
-    dropFile(event) {
-        console.log(event);
-    }
-
     uploadEvent(file: File): void {
-        if (this.file) {
+        if (file) {
             const formData: FormData = new FormData();
             formData.append('multiparts', file, file.name);
             this.uploading = true;
@@ -60,6 +56,7 @@ export class FileDialogComponent {
                     images[0].file = this.data.file;
                     this.images.push(images[0]);
                     this.uploading = false;
+                    this.data.file.description += '[](/api/images/' + this.data.file.id + '_' + images[0].id.filename + ')';
                 });
         }
     }

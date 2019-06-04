@@ -25,7 +25,7 @@
     </mat-list-item>
   </mat-nav-list>
 
-  <td-file-upload #fileUpload [(ngModel)]="file" defaultColor="accent" activeColor="warn" cancelColor="primary" (upload)="uploadEvent($event)" accept=".png,.jpg" *ngIf="data.file.id" [disabled]="uploading">
+  <td-file-upload #fileUpload [(ngModel)]="file" defaultColor="accent" activeColor="warn" cancelColor="primary" (upload)="uploadEvent(file)" accept=".png,.jpg" *ngIf="data.file.id" [disabled]="uploading">
     <mat-icon>file_upload</mat-icon><span>{{ file?.name }}</span>
     <ng-template td-file-input-label>
       <mat-icon>attach_file</mat-icon>
