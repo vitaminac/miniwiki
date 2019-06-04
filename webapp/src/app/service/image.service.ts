@@ -10,11 +10,11 @@ export class ImageService {
     constructor(private http: HttpClient) {
     }
 
-    fetchImagesByFileId(id: number): Observable<[]> {
+    fetchImagesByFileId(id: number): Observable<{ file }[]> {
         return this.http.get<[]>('/api/forms/' + id + '/images');
     }
 
-    deleteImage(id: string) {
-        return this.http.delete('/api/images/' + id);
+    deleteImage(image) {
+        return this.http.delete('/api/images/' + image.file.id + '_' + image.id.filename);
     }
 }

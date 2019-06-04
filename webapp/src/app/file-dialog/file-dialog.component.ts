@@ -29,6 +29,7 @@ export class FileDialogComponent {
     ) {
         if (this.data.file.id) {
             this.imageRest.fetchImagesByFileId(this.data.file.id).subscribe(images => {
+                images.forEach(image => image.file = this.data.file);
                 this.images = images;
             });
         }
@@ -63,7 +64,7 @@ export class FileDialogComponent {
     }
 
     deleteImage(image) {
-        this.imageRest.deleteImage(image.id).subscribe(() => {
+        this.imageRest.deleteImage(image).subscribe(() => {
             this.images = this.images.filter(img => img !== image);
         });
     }

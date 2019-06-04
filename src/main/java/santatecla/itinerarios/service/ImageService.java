@@ -6,6 +6,8 @@ import santatecla.itinerarios.repo.ImageRepository;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ImageService {
     private ImageRepository repository;
@@ -14,6 +16,7 @@ public class ImageService {
         this.repository = repository;
     }
 
+    @Transactional
     public Optional<Image> findById(String id) {
         final int index = id.indexOf("_");
         Long formId = Long.parseLong(id.substring(0, index));
