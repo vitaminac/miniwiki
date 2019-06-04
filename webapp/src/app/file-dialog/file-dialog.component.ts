@@ -56,8 +56,9 @@ export class FileDialogComponent {
             formData.append('multiparts', file, file.name);
             this.uploading = true;
             this.rest.addImageToFile(this.data.file, formData)
-                .subscribe((image) => {
-                    this.images.push(image);
+                .subscribe((images) => {
+                    images[0].file = this.data.file;
+                    this.images.push(images[0]);
                     this.uploading = false;
                 });
         }
