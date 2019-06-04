@@ -11,6 +11,7 @@ import lombok.ToString;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -38,7 +39,7 @@ public class Form {
     @Lob
     private String description;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "id.form")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "id.form", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Image> images;
 
