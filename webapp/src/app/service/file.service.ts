@@ -20,7 +20,15 @@ export class FileService {
         });
     }
 
+    saveFile(file: File): Observable<File> {
+        return this.http.post<File>('/api/forms', file);
+    }
+
     deleteFile(file: File) {
         return this.http.delete('/api/forms/' + file.id);
+    }
+
+    addImageToFile(file: File, image): Observable<any> {
+        return this.http.post('/api/forms/' + file.id + '/images', image);
     }
 }

@@ -1,9 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { File as Model } from '../model/file';
-import { ResourcesService } from '../service/resources.service';
-import { Resource } from '../model/resource';
 import { ClipboardService } from 'ngx-clipboard';
+import { File as Model } from '../model/file';
+import { FileService } from '../service/file.service';
+import { ImageService } from '../service/image.service';
 
 export interface FileDialogData {
     file: Model;
@@ -13,19 +13,25 @@ export interface FileDialogData {
 @Component({
     selector: 'app-file-dialog',
     templateUrl: './file-dialog.component.html',
+    styleUrls: ['./file-dialog.component.scss']
 })
 export class FileDialogComponent {
-    images: Resource[] = [];
+    images = [];
     file: File;
-    disabled = false;
+    uploading = false;
 
     constructor(
         private dialogRef: MatDialogRef<FileDialogComponent>,
-        private rest: ResourcesService,
+        private rest: FileService,
+        private imageRest: ImageService,
         @Inject(MAT_DIALOG_DATA) public data: FileDialogData,
         private clipboardService: ClipboardService
     ) {
-        data.file.images.subscribe(images => this.images = images);
+        if (this.data.file.id) {
+            this.imageRest.fetchImagesByFileId(this.data.file.id).subscribe(images => {
+                this.images = images;
+            });
+        }
     }
 
     cancel(): void {
@@ -39,26 +45,53 @@ export class FileDialogComponent {
         });
     }
 
-    uploadEvent(file: File): void {
-        const formData: FormData = new FormData();
-        formData.append('multiparts', file, file.name);
-        this.disabled = true;
-        this.rest.addResourceRelation(this.data.file, formData, 'images')
-            .subscribe(() => {
-                this.rest.refreshResources(this.data.file.link('images'), Resource, 'images').subscribe(images => {
-                    this.images = images;
-                    this.disabled = false;
-                });
-            });
+    dropFile(event) {
+        console.log(event);
     }
 
-    deleteImage(image: Resource) {
-        this.rest.deleteResource(image).subscribe(() => {
+    uploadEvent(file: File): void {
+        if (this.file) {
+            const formData: FormData = new FormData();
+            formData.append('multiparts', file, file.name);
+            this.uploading = true;
+            this.rest.addImageToFile(this.data.file, formData)
+                .subscribe((image) => {
+                    this.images.push(image);
+                    this.uploading = false;
+                });
+        }
+    }
+
+    deleteImage(image) {
+        this.imageRest.deleteImage(image.id).subscribe(() => {
             this.images = this.images.filter(img => img !== image);
         });
     }
 
     copy(content: string) {
         this.clipboardService.copyFromContent(content);
+    }
+
+    onDrop(event) {
+        event.preventDefault();
+        if (event.dataTransfer.items) {
+            // Use DataTransferItemList interface to access the file(s)
+            for (const item of event.dataTransfer.items) {
+                // If dropped items aren't files, reject them
+                if (item.kind === 'file') {
+                    const file: File = item.getAsFile();
+                    this.uploadEvent(file);
+                }
+            }
+        } else {
+            // Use DataTransfer interface to access the file(s)
+            for (const file of event.dataTransfer.files) {
+                this.uploadEvent(file);
+            }
+        }
+    }
+    onDragOver(event) {
+        event.stopPropagation();
+        event.preventDefault();
     }
 }

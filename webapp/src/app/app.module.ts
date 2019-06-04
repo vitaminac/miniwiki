@@ -86,7 +86,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CachingInterceptor } from './interceptor/caching-interceptor';
 import { RequestCacheWithMap } from './service/request-cache.service';
-import { MessageService } from './service/message.service';
+
 @NgModule({
     declarations: [
         AppComponent,

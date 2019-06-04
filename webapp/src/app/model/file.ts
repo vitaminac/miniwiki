@@ -6,10 +6,7 @@ export class File extends Resource {
     title: string;
     description: string;
     unit: number;
-
-    get images(): Observable<Resource[]> {
-        return super.lazyLoadResources('images', Resource);
-    }
+    images: Observable<Resource[]>;
 
     toJSON() {
         return {

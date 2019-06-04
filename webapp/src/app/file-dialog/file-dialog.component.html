@@ -11,7 +11,7 @@
         </mat-hint>
       </mat-form-field>
     </div>
-    <div layout="row">
+    <div layout="row" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
       <td-text-editor #descriptionElement [(ngModel)]="data.file.description" name="description"></td-text-editor>
     </div>
   </form>
@@ -25,7 +25,7 @@
     </mat-list-item>
   </mat-nav-list>
 
-  <td-file-upload #fileUpload [(ngModel)]="file" defaultColor="accent" activeColor="warn" cancelColor="primary" (upload)="uploadEvent($event)" accept=".png,.jpg" *ngIf="data.file.id" [disabled]="disabled">
+  <td-file-upload #fileUpload [(ngModel)]="file" defaultColor="accent" activeColor="warn" cancelColor="primary" (upload)="uploadEvent($event)" accept=".png,.jpg" *ngIf="data.file.id" [disabled]="uploading">
     <mat-icon>file_upload</mat-icon><span>{{ file?.name }}</span>
     <ng-template td-file-input-label>
       <mat-icon>attach_file</mat-icon>

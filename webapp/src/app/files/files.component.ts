@@ -62,6 +62,7 @@ export class FilesComponent implements OnInit {
                 this.loading = true;
                 this.rest.fetchFilesOfPageByUnitId(this.unit, this.page++).subscribe(data => {
                     this.total = data.totalPages;
+                    data.content.forEach(file => file.unit = this.unit);
                     this.files = this.files.concat(data.content);
                     this.loading = false;
                 });

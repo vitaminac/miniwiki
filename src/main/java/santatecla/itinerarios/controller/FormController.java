@@ -2,6 +2,7 @@ package santatecla.itinerarios.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,8 +37,8 @@ public class FormController {
     }
 
     @PostMapping(value = "{form}/images")
-    public ResponseEntity<Form> addImage(@Valid @PathVariable Form form, @RequestParam List<MultipartFile> multiparts)
-            throws IOException {
+    public ResponseEntity<Set<Image>> addImage(@Valid @PathVariable Form form,
+            @RequestParam List<MultipartFile> multiparts) throws IOException {
         this.imageRepository
                 .saveAll(multiparts.stream()
                         .filter(multipart -> multipart.getOriginalFilename() != null
@@ -48,7 +50,12 @@ public class FormController {
                                 return null;
                             }
                         }).collect(Collectors.toList()));
-        return ResponseEntity.ok(this.repository.save(form));
+        return ResponseEntity.ok(this.repository.save(form).getImages());
+    }
+
+    @GetMapping(value = "{id}/images")
+    public ResponseEntity<Set<Image>> getImage(@PathVariable Long id) {
+        return ResponseEntity.ok(this.imageRepository.findById_Form_Id(id));
     }
 
     @PostMapping // TODO: search if it's posible to map file to form

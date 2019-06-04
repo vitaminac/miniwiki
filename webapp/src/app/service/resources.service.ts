@@ -95,10 +95,6 @@ export class ResourcesService {
         return this.fetchResource('/api/forms/' + id, File);
     }
 
-    saveFile(file: File): Observable<File> {
-        return this.http.post<File>('/api/forms', file).pipe(mergeMap(file => this.fetchFile(file.id)));
-    }
-
     private clone(entity) {
         const cloned = { ...entity };
         delete cloned['rest'];
