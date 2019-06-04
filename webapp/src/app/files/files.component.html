@@ -1,4 +1,4 @@
-<ng-template tdLoading="files.list">
+<ng-template tdLoading [tdLoadingUntil]="!loading">
   <ng-template let-file let-last="last" ngFor [ngForOf]="files">
     <app-file [file]="file" (remove)="deleteFile(file)"></app-file>
     <mat-divider *ngIf="!last" [inset]="true"></mat-divider>

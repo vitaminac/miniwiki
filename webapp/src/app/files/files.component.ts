@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
-import { File } from '../model/file';
-import { ResourcesService } from '../service/resources.service';
 import { FileDialogComponent } from '../file-dialog/file-dialog.component';
+import { File } from '../model/file';
 import { AuthenticationService } from '../service/authentication.service';
+import { FileService } from '../service/file.service';
 
 @Component({
     selector: 'app-files',
@@ -13,10 +13,13 @@ import { AuthenticationService } from '../service/authentication.service';
 })
 export class FilesComponent implements OnInit {
     unit: number;
-    files: File[];
+    page = 0;
+    files: File[] = [];
+    loading = false;
+    total = 1;
 
     constructor(
-        private rest: ResourcesService,
+        private rest: FileService,
         private route: ActivatedRoute,
         public dialog: MatDialog,
         private auth: AuthenticationService
@@ -26,22 +29,18 @@ export class FilesComponent implements OnInit {
     ngOnInit(): void {
         this.route.parent.params.subscribe(params => {
             this.unit = Number(params.id);
-            this.rest.fetchFiles(this.unit).subscribe(files => {
-                this.files = files;
-                this.files.forEach(file => file.unit = this.unit);
-            });
+            this.loadMore();
         });
     }
 
     deleteFile(file: File) {
-        this.rest.deleteResource(file).subscribe(() => {
+        this.rest.deleteFile(file).subscribe(() => {
             this.files = this.files.filter(f => f.id !== file.id);
         });
     }
 
     createFile(): void {
-        const newFile = new File({}, this.rest);
-        newFile.unit = this.unit;
+        const newFile = { unit: this.unit };
         const dialogRef = this.dialog.open(FileDialogComponent, {
             data: {
                 file: newFile,
@@ -55,6 +54,19 @@ export class FilesComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed');
         });
+    }
+
+    loadMore() {
+        if (!this.loading) {
+            if (this.page < this.total) {
+                this.loading = true;
+                this.rest.fetchFilesOfPageByUnitId(this.unit, this.page++).subscribe(data => {
+                    this.total = data.totalPages;
+                    this.files = this.files.concat(data.content);
+                    this.loading = false;
+                });
+            }
+        }
     }
 
     get isAdmin() {
